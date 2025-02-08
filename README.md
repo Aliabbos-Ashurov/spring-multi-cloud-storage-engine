@@ -1,7 +1,6 @@
 # Advanced Multi-Cloud File Storage
 
-This project demonstrates an advanced-level implementation of a **multi-cloud file storage system** using **Spring Boot
-**. It supports dynamic provider selection (AWS S3, Google Cloud Storage) and incorporates best practices such as
+This project demonstrates an advanced-level implementation of a **multi-cloud file storage system** using Spring Context. It supports dynamic provider selection (AWS S3, Google Cloud Storage) and incorporates best practices such as
 asynchronous processing, caching, retries, and observability.
 
 ---
