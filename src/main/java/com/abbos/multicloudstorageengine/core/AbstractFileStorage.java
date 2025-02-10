@@ -5,6 +5,7 @@ import com.abbos.multicloudstorageengine.exception.FileStorageException;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author Aliabbos Ashurov
@@ -18,15 +19,18 @@ public abstract class AbstractFileStorage implements FileStorage {
 
     protected abstract void delete(String path);
 
+    private final ExecutorService EXECUTOR;
+
+    public AbstractFileStorage(ExecutorService executor) {
+        EXECUTOR = executor;
+    }
+
     @Override
     public CompletableFuture<Void> uploadAsync(String path, InputStream inputStream) {
-        return CompletableFuture.runAsync(() -> {
-            try {
-                upload(path, inputStream);
-            } catch (Exception e) {
-                throw new FileStorageException("Failed to upload file: ", e);
-            }
-        });
+        return CompletableFuture.runAsync(() -> upload(path, inputStream), EXECUTOR)
+                .exceptionally(ex -> {
+                    throw new FileStorageException("Error while uploading file", ex);
+                });
     }
 
     @Override
