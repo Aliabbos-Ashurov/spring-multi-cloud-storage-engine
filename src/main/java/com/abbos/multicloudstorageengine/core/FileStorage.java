@@ -1,5 +1,6 @@
 package com.abbos.multicloudstorageengine.core;
 
+import com.abbos.multicloudstorageengine.enums.FileType;
 import com.abbos.multicloudstorageengine.exception.FileStorageException;
 
 import java.io.InputStream;
@@ -19,16 +20,27 @@ public interface FileStorage {
      *
      * @param path        Destination path or key.
      * @param inputStream File content stream.
-     * @return CompletableFuture that completes on success or failure.
+     * @return CompletableFuture indicating success or failure.
      * @throws FileStorageException If upload fails.
      */
     CompletableFuture<Void> uploadAsync(String path, InputStream inputStream);
 
     /**
+     * Uploads a file asynchronously with a specified file type.
+     *
+     * @param path        Destination path or key.
+     * @param inputStream File content stream.
+     * @param fileType    Type of the file (e.g., JPEG, PDF).
+     * @return CompletableFuture indicating success or failure.
+     * @throws FileStorageException If upload fails.
+     */
+    CompletableFuture<Void> uploadAsync(String path, InputStream inputStream, FileType fileType);
+
+    /**
      * Downloads a file asynchronously.
      *
      * @param path File path or key.
-     * @return CompletableFuture with Optional InputStream. Empty if file not found.
+     * @return CompletableFuture with an Optional InputStream. Empty if file not found.
      * @throws FileStorageException If download fails.
      */
     CompletableFuture<Optional<InputStream>> downloadAsync(String path);
@@ -37,7 +49,7 @@ public interface FileStorage {
      * Deletes a file asynchronously.
      *
      * @param path File path or key.
-     * @return CompletableFuture that completes on success or failure.
+     * @return CompletableFuture indicating success or failure.
      * @throws FileStorageException If deletion fails.
      */
     CompletableFuture<Void> deleteAsync(String path);
