@@ -1,29 +1,16 @@
 package com.abbos.multicloudstorageengine.provider;
 
 /**
- * <p>
- * A marker interface used to identify classes that represent storage providers within the file storage framework.
- * This interface does not define any methods or behavior but serves as a tagging mechanism to group and classify
- * provider implementations (e.g., AWS S3, Google Cloud Storage).
- * </p>
+ * A marker interface to identify storage provider classes in the file storage framework.
+ * It serves as a tagging mechanism for grouping provider implementations (e.g., AWS S3, Google Cloud Storage).
+ * Implementations provide functionality for interacting with specific cloud storage systems.
  *
- * <p>
- * Implementations of this interface are expected to provide concrete functionality for interacting with specific
- * cloud storage systems. By implementing this marker interface, classes signal their role as storage providers,
- * enabling dynamic discovery and integration within the framework.
- * </p>
- *
- * <p>
  * Example Use Cases:
- * <ul>
- *   <li>Dynamic provider selection using reflection or dependency injection frameworks.</li>
- *   <li>Ensuring type safety when working with provider-specific configurations or factories.</li>
- * </ul>
- * </p>
+ * - Dynamic provider selection via reflection or dependency injection.
+ * - Ensuring type safety for provider-specific configurations or factories.
  *
  * @author Aliabbos Ashurov
- * @since 08/February/2025 15:51
+ * @since 10/February/2025 18:23
  */
-public interface StorageProvider {
-    // Marker interface; no methods defined.
+public interface StorageProvider extends Provider {
 }
