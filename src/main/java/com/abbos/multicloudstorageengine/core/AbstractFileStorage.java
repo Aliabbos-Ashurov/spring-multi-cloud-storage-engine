@@ -1,11 +1,14 @@
 package com.abbos.multicloudstorageengine.core;
 
+import com.abbos.multicloudstorageengine.enums.FileType;
 import com.abbos.multicloudstorageengine.exception.FileStorageException;
 
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Aliabbos Ashurov
@@ -13,21 +16,26 @@ import java.util.concurrent.ExecutorService;
  **/
 public abstract class AbstractFileStorage implements FileStorage {
 
-    protected abstract void upload(String path, InputStream inputStream);
-
-    protected abstract Optional<InputStream> download(String path);
-
-    protected abstract void delete(String path);
-
     private final ExecutorService EXECUTOR;
+    private final boolean logEnabled;
+    protected final Logger LOG = Logger.getLogger(this.getClass().getName());
 
-    public AbstractFileStorage(ExecutorService executor) {
-        EXECUTOR = executor;
+    public AbstractFileStorage(ExecutorService executor, boolean logEnabled) {
+        this.EXECUTOR = executor;
+        this.logEnabled = logEnabled;
     }
 
     @Override
     public CompletableFuture<Void> uploadAsync(String path, InputStream inputStream) {
-        return CompletableFuture.runAsync(() -> upload(path, inputStream), EXECUTOR)
+        return CompletableFuture.runAsync(() -> upload(path, inputStream, FileType.OCTET_STREAM), EXECUTOR)
+                .exceptionally(ex -> {
+                    throw new FileStorageException("Error while uploading file", ex);
+                });
+    }
+
+    @Override
+    public CompletableFuture<Void> uploadAsync(String path, InputStream inputStream, FileType fileType) {
+        return CompletableFuture.runAsync(() -> upload(path, inputStream, fileType), EXECUTOR)
                 .exceptionally(ex -> {
                     throw new FileStorageException("Error while uploading file", ex);
                 });
@@ -35,23 +43,31 @@ public abstract class AbstractFileStorage implements FileStorage {
 
     @Override
     public CompletableFuture<Optional<InputStream>> downloadAsync(String path) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return download(path);
-            } catch (Exception e) {
-                throw new FileStorageException("Failed to download file: ", e);
-            }
-        });
+        return CompletableFuture.supplyAsync(() -> download(path), EXECUTOR)
+                .exceptionally(ex -> {
+                    throw new FileStorageException("Error while downloading file", ex);
+                });
     }
 
     @Override
     public CompletableFuture<Void> deleteAsync(String path) {
-        return CompletableFuture.runAsync(() -> {
-            try {
-                delete(path);
-            } catch (Exception e) {
-                throw new FileStorageException("Failed to delete file: ", e);
-            }
-        });
+        return CompletableFuture.runAsync(() -> delete(path), EXECUTOR)
+                .exceptionally(ex -> {
+                    throw new FileStorageException("Error while deleting file", ex);
+                });
     }
+
+    protected void log(Level level, String message, Object... params) {
+        if (logEnabled) {
+            LOG.log(level, String.format(message, params));
+        }
+    }
+
+    protected abstract void upload(String path, InputStream inputStream);
+
+    protected abstract void upload(String path, InputStream inputStream, FileType fileType);
+
+    protected abstract Optional<InputStream> download(String path);
+
+    protected abstract void delete(String path);
 }
