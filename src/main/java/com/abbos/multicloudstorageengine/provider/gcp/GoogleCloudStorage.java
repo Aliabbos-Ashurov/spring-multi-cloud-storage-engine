@@ -1,10 +1,12 @@
 package com.abbos.multicloudstorageengine.provider.gcp;
 
 import com.abbos.multicloudstorageengine.core.AbstractFileStorage;
+import com.abbos.multicloudstorageengine.enums.FileType;
 import com.abbos.multicloudstorageengine.provider.StorageProvider;
 
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author Aliabbos Ashurov
@@ -12,8 +14,17 @@ import java.util.Optional;
  **/
 public final class GoogleCloudStorage extends AbstractFileStorage implements StorageProvider {
 
+    public GoogleCloudStorage(ExecutorService executor) {
+        super(executor, true);
+    }
+
     @Override
     protected void upload(String path, InputStream inputStream) {
+
+    }
+
+    @Override
+    protected void upload(String path, InputStream inputStream, FileType fileType) {
 
     }
 
