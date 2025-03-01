@@ -5,7 +5,7 @@
 
     <groupId>com.abbos</groupId>
     <artifactId>multi-cloud-storage-engine</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
     <name>multi-cloud-storage-engine</name>
     <description>multi-cloud-storage-engine</description>
 
@@ -76,9 +76,11 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 
 </project>
