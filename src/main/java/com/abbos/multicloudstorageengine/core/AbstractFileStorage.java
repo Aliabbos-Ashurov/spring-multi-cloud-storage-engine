@@ -20,7 +20,7 @@ public abstract class AbstractFileStorage implements FileStorage {
     private final boolean logEnabled;
     protected final Logger LOG = Logger.getLogger(this.getClass().getName());
 
-    public AbstractFileStorage(ExecutorService executor, boolean logEnabled) {
+    protected AbstractFileStorage(ExecutorService executor, boolean logEnabled) {
         this.EXECUTOR = executor;
         this.logEnabled = logEnabled;
     }
@@ -57,7 +57,7 @@ public abstract class AbstractFileStorage implements FileStorage {
                 });
     }
 
-    protected void log(Level level, String message, Object... params) {
+    protected void printLog(Level level, String message, Object... params) {
         if (logEnabled) {
             LOG.log(level, String.format(message, params));
         }
