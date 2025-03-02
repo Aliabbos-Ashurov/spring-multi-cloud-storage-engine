@@ -1,4 +1,4 @@
-package com.abbos.multicloudstorageengine.provider.gcp;
+package com.abbos.multicloudstorageengine.provider.gcs;
 
 import com.abbos.multicloudstorageengine.core.AbstractFileStorage;
 import com.abbos.multicloudstorageengine.enums.FileType;

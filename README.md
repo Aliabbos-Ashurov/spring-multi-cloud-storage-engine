@@ -43,9 +43,9 @@ Sample application.yml
        region: ${AWS_REGION:region}
      gcp:
        enabled: true
-       project-id: ${GCP_PROJECT_ID:your-gcp-project-id}
+       project-id: ${GCP_PROJECT_ID:your-gcs-project-id}
        bucket-name: ${GCP_BUCKET_NAME:your-gcs-bucket-name}
-       credentials: ${GCP_CREDENTIALS:/path/to/gcp-service-account-key.json}
+       credentials: ${GCP_CREDENTIALS:/path/to/gcs-service-account-key.json}
        log-enabled: true  # or false
      azure:
        enabled: true
@@ -92,7 +92,7 @@ public class StorageController {
         return "File successfully uploaded to AWS S3: " + fileName;
     }
 
-    @PostMapping("/upload/gcp")
+    @PostMapping("/upload/gcs")
     public String uploadToGCP(@RequestParam("file") MultipartFile file) {
         String fileName = file.getOriginalFilename();
         gcpStorageService.uploadFile(fileName, file);
