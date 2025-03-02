@@ -17,6 +17,7 @@
         <logback.version>1.5.16</logback.version>
         <aws-sdk.version>2.30.16</aws-sdk.version>
         <gcs-storage.version>2.48.1</gcs-storage.version>
+        <azure-storage.version>12.28.1</azure-storage.version>
         <resilience4j.version>2.3.0</resilience4j.version>
         <micrometer.version>1.14.2</micrometer.version>
         <reactor.version>3.7.2</reactor.version>
@@ -29,18 +30,11 @@
             <version>${spring-boot.version}</version>
         </dependency>
 
-        <!-- Spring Boot Validation -->
+        <!-- Reactor Core (fixes Mono not found) -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-
-        <!-- Spring Boot Actuator for Monitoring -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>${spring-boot.version}</version>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+            <version>${reactor.version}</version>
         </dependency>
 
         <!-- AWS S3 SDK -->
@@ -57,49 +51,11 @@
             <version>${gcs-storage.version}</version>
         </dependency>
 
-        <!-- Resilience4j for Circuit Breakers and Retries -->
+        <!-- Azure Blob Storage SDK -->
         <dependency>
-            <groupId>io.github.resilience4j</groupId>
-            <artifactId>resilience4j-spring-boot3</artifactId>
-            <version>${resilience4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.resilience4j</groupId>
-            <artifactId>resilience4j-retry</artifactId>
-            <version>${resilience4j.version}</version>
-        </dependency>
-
-        <!-- Micrometer for Metrics (Prometheus) -->
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
-            <version>${micrometer.version}</version>
-        </dependency>
-
-        <!-- Project Reactor for Reactive Programming -->
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
-            <version>${reactor.version}</version>
-        </dependency>
-
-        <!-- YAML Parsing -->
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>${snakeyaml.version}</version>
-        </dependency>
-
-        <!-- Logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-storage-blob</artifactId>
+            <version>${azure-storage.version}</version>
         </dependency>
     </dependencies>
 
@@ -110,9 +66,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>21</source>
+                    <target>21</target>
                     <encoding>UTF-8</encoding>
+                    <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
             <!-- Spring Boot Maven Plugin for Packaging -->

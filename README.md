@@ -30,29 +30,33 @@ application.yml file. Here’s a sample configuration for multiple providers:
 Sample application.yml
 
   ````yaml
-  multi-cloud:
-   storage:
-     aws:
-       enabled: true
-       access-key: ${AWS_ACCESS_KEY:m}
-       secret-key: ${AWS_SECRET_KEY:k}
-       base-url: ${AWS_BASE_URL:https://${multi-cloud.storage.aws.bucket-name}.s3.amazonaws.com/${multi-cloud.storage.aws.region}
-       packages: [ "public", "private" ]
-       log-enabled: true  # or false
-       bucket-name: ${AWS_BUCKET_NAME:bucket name}
-       region: ${AWS_REGION:region}
-     gcp:
-       enabled: true
-       project-id: ${GCP_PROJECT_ID:your-gcp-project-id}
-       bucket-name: ${GCP_BUCKET_NAME:your-gcs-bucket-name}
-       credentials: ${GCP_CREDENTIALS:/path/to/gcp-service-account-key.json}
-       log-enabled: true  # or false
-     azure:
-       enabled: true
-       account-name: ${AZURE_ACCOUNT_NAME:your-azure-account-name}
-       account-key: ${AZURE_ACCOUNT_KEY:YOUR_AZURE_ACCOUNT_KEY}
-       container: ${AZURE_CONTAINER:your-blob-container-name}
-       log-enabled: true  # or false
+multi-cloud:
+  storage:
+    aws:
+      enabled: ${AWS_ENABLED:false}
+      access-key: ${AWS_ACCESS_KEY:m}
+      secret-key: ${AWS_SECRET_KEY:k}
+      base-url: ${AWS_BASE_URL:https://${multi-cloud.storage.aws.bucket-name}.s3.amazonaws.com/${multi-cloud.storage.aws.region}}
+      packages: [ "public", "private" ]
+      log-enabled: ${AWS_LOG_ENABLED:true}
+      bucket-name: ${AWS_BUCKET_NAME:bucket-name}
+      region: ${AWS_REGION:region}
+    gcs:
+      enabled: ${GCS_ENABLED:false}
+      credentials-path: ${GCS_CREDENTIALS_PATH:/path/to/gcs/credentials.json}
+      project-id: ${GCS_PROJECT_ID:your-gcs-project-id}
+      bucket-name: ${GCS_BUCKET_NAME:your-gcs-bucket}
+      base-url: ${GCS_BASE_URL:https://storage.googleapis.com/${multi-cloud.storage.gcs.bucket-name}}
+      log-enabled: ${GCS_LOG_ENABLED:true}
+      packages: [ "public", "private" ]
+    azure:
+      enabled: ${AZURE_ENABLED:false}
+      account-name: ${AZURE_ACCOUNT_NAME:your-azure-account}
+      account-key: ${AZURE_ACCOUNT_KEY:your-azure-key}
+      container-name: ${AZURE_CONTAINER_NAME:your-container}
+      base-url: ${AZURE_BASE_URL:https://${multi-cloud.storage.azure.account-name}.blob.core.windows.net/${multi-cloud.storage.azure.container-name}}
+      packages: [ "public", "private" ]
+      log-enabled: ${AZURE_LOG_ENABLED:true}
    ````
 
 ## Utilizing Storage Services
