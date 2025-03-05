@@ -1,7 +1,6 @@
 package com.abbos.multicloudstorageengine.context;
 
 
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -15,7 +14,7 @@ import java.util.function.Function;
  * @author Aliabbos Ashurov
  * @since 01/March/2025
  */
-public class Pair<L, R> implements Serializable {
+public class Pair<L, R> implements java.io.Serializable {
 
     @java.io.Serial
     private static final long serialVersionUID = -2139667479971038690L;
@@ -75,7 +74,7 @@ public class Pair<L, R> implements Serializable {
      * @param <T>    the type of the result, must be serializable
      * @return the result of applying the function
      */
-    public <T extends Serializable> T combine(BiFunction<? super L, ? super R, ? extends T> biFunc) {
+    public <T extends java.io.Serializable> T combine(BiFunction<? super L, ? super R, ? extends T> biFunc) {
         return biFunc.apply(left, right);
     }
 
