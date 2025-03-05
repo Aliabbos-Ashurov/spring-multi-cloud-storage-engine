@@ -52,15 +52,6 @@ public final class Capabilities {
     }
 
     /**
-     * Creates a Capabilities instance with support for both asynchronous and reactive operations.
-     *
-     * @return a new Capabilities instance with both async and reactive support enabled
-     */
-    public static Capabilities both() {
-        return new Capabilities(true, true);
-    }
-
-    /**
      * Checks if asynchronous operations are supported.
      *
      * @return true if async operations are supported, false otherwise
