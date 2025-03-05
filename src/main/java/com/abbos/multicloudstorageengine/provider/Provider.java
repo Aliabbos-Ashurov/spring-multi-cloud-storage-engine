@@ -48,14 +48,9 @@ public interface Provider {
      * otherwise an empty {@link Optional}
      */
     default <T> Optional<T> getMetadataValue(ExecutionContext context, MetadataKey targetKey, Class<T> expectedType) {
-        for (Pair<MetadataKey, Object> pair : context.getMetadata()) {
-            MetadataKey metadataKey = pair.getLeft();
-            Object metadataValue = pair.getRight();
-
-            if (metadataKey.equals(targetKey) && expectedType.isInstance(metadataValue)) {
-                return Optional.of(expectedType.cast(metadataValue));
-            }
-        }
-        return Optional.empty();
+        return context.getMetadata().stream()
+                .filter(pair -> pair.getLeft().equals(targetKey) && expectedType.isInstance(pair.getRight()))
+                .map(pair -> expectedType.cast(pair.getRight()))
+                .findFirst();
     }
 }
