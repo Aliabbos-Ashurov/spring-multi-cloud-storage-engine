@@ -8,6 +8,6 @@ package com.abbos.multicloudstorageengine.exception;
  **/
 public class MissingConfigurationException extends FileStorageException {
     public MissingConfigurationException(String configKey) {
-        super(STR."Missing required configuration: \{configKey}");
+        super("Missing required configuration:" + configKey);
     }
 }

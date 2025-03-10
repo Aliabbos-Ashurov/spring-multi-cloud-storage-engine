@@ -8,6 +8,6 @@ package com.abbos.multicloudstorageengine.exception;
  **/
 public class InvalidProviderException extends FileStorageException {
     public InvalidProviderException(String provider) {
-        super(STR."Invalid file storage provider: \{provider}");
+        super("Invalid file storage provider: " + provider);
     }
 }
