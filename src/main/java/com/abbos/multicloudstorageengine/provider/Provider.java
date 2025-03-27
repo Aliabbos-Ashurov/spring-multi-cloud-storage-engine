@@ -1,7 +1,6 @@
 package com.abbos.multicloudstorageengine.provider;
 
 import com.abbos.multicloudstorageengine.context.ExecutionContext;
-import com.abbos.multicloudstorageengine.context.Pair;
 import com.abbos.multicloudstorageengine.enums.MetadataKey;
 import com.abbos.multicloudstorageengine.model.Capabilities;
 
@@ -18,7 +17,7 @@ import java.util.Optional;
  * @author Aliabbos Ashurov
  * @since 02/March/2025 08:50
  */
-public interface Provider {
+public interface Provider extends Loggable {
 
     /**
      * Retrieves the name of the storage provider.
