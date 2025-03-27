@@ -48,6 +48,9 @@ public enum MetadataKey {
 
     @Override
     public String toString() {
-        return STR."MetadataKey{key='\{key}', type=\{type}}";
+        return "MetadataKey{" +
+                "key='" + key + '\'' +
+                ", type=" + type +
+                '}';
     }
 }

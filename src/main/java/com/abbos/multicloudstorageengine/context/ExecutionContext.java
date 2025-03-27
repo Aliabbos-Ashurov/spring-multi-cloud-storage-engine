@@ -1,5 +1,7 @@
 package com.abbos.multicloudstorageengine.context;
 
+import com.abbos.multicloudstorageengine.enums.MetadataKey;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,11 +14,12 @@ import java.util.Objects;
  * immutable configuration for storage-related tasks in a multi-cloud environment.
  *
  * <p>Instances of this class can be created using the {@link Builder} class or the static factory
- * methods {@link #of(Duration, int, Pair)}, {@link #of(Duration, int, List)}, and {@link #ofDefaults()}.
+ * methods {@link #of(Duration, int, Pair)}, {@link #of(Duration, int, List)}, and {@link #ofDefault()}.
  *
  * @author Aliabbos Ashurov
  * @since 01/March/2025
  */
+@SuppressWarnings("unused")
 public final class ExecutionContext {
     private final Duration timeout;
     private final int maxRetries;
@@ -33,10 +36,10 @@ public final class ExecutionContext {
     private ExecutionContext(Builder builder) {
         this.timeout = Objects.requireNonNull(builder.timeout, "Timeout cannot be null");
         this.maxRetries = builder.maxRetries;
-        this.priority = builder.priority != null ? builder.priority : Priority.MEDIUM; // Default
-        this.metadata = builder.metadata != null
-                ? Collections.unmodifiableList(builder.metadata)
-                : Collections.emptyList();
+        this.priority = builder.priority != null ? builder.priority : Priority.MEDIUM;
+        this.metadata = builder.metadata == null ?
+                Collections.emptyList() :
+                Collections.unmodifiableList(new ArrayList<>(builder.metadata));
         validate();
     }
 
@@ -53,11 +56,14 @@ public final class ExecutionContext {
         if (timeout.isNegative() || timeout.isZero()) {
             throw new IllegalArgumentException("Timeout must be positive");
         }
-        for (Pair<MetadataKey, Object> pair : metadata) {
-            if (!pair.getLeft().getType().isInstance(pair.getRight())) {
-                throw new IllegalArgumentException(
-                        "Invalid value type for " + pair.getLeft() + ": expected " + pair.getLeft().getType()
-                );
+        if (!metadata.isEmpty()) {
+            for (Pair<MetadataKey, Object> pair : metadata) {
+                MetadataKey key = pair.getLeft();
+                Object value = pair.getRight();
+                if (!key.getType().isInstance(value)) {
+                    throw new IllegalArgumentException(
+                            "Invalid value type for " + key + ": expected " + key.getType());
+                }
             }
         }
     }
@@ -95,15 +101,16 @@ public final class ExecutionContext {
     }
 
     /**
-     * Creates a new {@code ExecutionContext} with default values: 5-second timeout,
-     * 3 retries, and medium priority, with no metadata.
+     * Creates a new {@code ExecutionContext} with default settings: 5s timeout, 3 retries,
+     * medium priority, and no metadata. Returns an immutable, thread-safe instance.
      *
-     * @return a new {@code ExecutionContext} instance with default settings
+     * @return a new {@code ExecutionContext} with defaults
      */
-    public static ExecutionContext ofDefaults() {
+    public static ExecutionContext ofDefault() {
         return new Builder()
                 .timeout(Duration.ofSeconds(5))
                 .maxRetries(3)
+                .metadata(List.of(Pair.ofNonNull(MetadataKey.CONTENT_TYPE, "application/octet-stream")))
                 .priority(Priority.MEDIUM)
                 .build();
     }
@@ -164,6 +171,13 @@ public final class ExecutionContext {
 
     public List<Pair<MetadataKey, Object>> getMetadata() {
         return metadata;
+    }
+
+    public Pair<MetadataKey, Object> getFirstMetadata() {
+        if (metadata == null || metadata.isEmpty()) {
+            throw new IllegalStateException("Metadata is empty or not initialized");
+        }
+        return metadata.getFirst();
     }
 
     @Override
