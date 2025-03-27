@@ -36,9 +36,6 @@ multi-cloud:
       enabled: ${AWS_ENABLED:false}
       access-key: ${AWS_ACCESS_KEY:m}
       secret-key: ${AWS_SECRET_KEY:k}
-      base-url: ${AWS_BASE_URL:https://${multi-cloud.storage.aws.bucket-name}.s3.amazonaws.com/${multi-cloud.storage.aws.region}}
-      packages: [ "public", "private" ]
-      log-enabled: ${AWS_LOG_ENABLED:true}
       bucket-name: ${AWS_BUCKET_NAME:bucket-name}
       region: ${AWS_REGION:region}
     gcs:
@@ -46,103 +43,12 @@ multi-cloud:
       credentials-path: ${GCS_CREDENTIALS_PATH:/path/to/gcs/credentials.json}
       project-id: ${GCS_PROJECT_ID:your-gcs-project-id}
       bucket-name: ${GCS_BUCKET_NAME:your-gcs-bucket}
-      base-url: ${GCS_BASE_URL:https://storage.googleapis.com/${multi-cloud.storage.gcs.bucket-name}}
-      log-enabled: ${GCS_LOG_ENABLED:true}
-      packages: [ "public", "private" ]
     azure:
       enabled: ${AZURE_ENABLED:false}
       account-name: ${AZURE_ACCOUNT_NAME:your-azure-account}
       account-key: ${AZURE_ACCOUNT_KEY:your-azure-key}
       container-name: ${AZURE_CONTAINER_NAME:your-container}
-      base-url: ${AZURE_BASE_URL:https://${multi-cloud.storage.azure.account-name}.blob.core.windows.net/${multi-cloud.storage.azure.container-name}}
-      packages: [ "public", "private" ]
-      log-enabled: ${AZURE_LOG_ENABLED:true}
    ````
-
-## Utilizing Storage Services
-
-This library offers a `StorageService` interface, implemented for each supported cloud provider (`AWSS3StorageService`,
-`GCPStorageService`, `AzureBlobStorageService`). You can inject these services into your Spring components as needed.
-
-### Sample: File Management Controller
-
-```java
-import com.aliabbosashurov.storage.service.StorageService;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-@RestController
-@RequestMapping("/storage")
-public class StorageController {
-
-    private final StorageService awsStorageService;
-    private final StorageService gcpStorageService;
-    private final StorageService azureStorageService;
-
-    public StorageController(
-            @Qualifier("AWSS3StorageService") StorageService awsStorageService,
-            @Qualifier("GCPStorageService") StorageService gcpStorageService,
-            @Qualifier("AzureBlobStorageService") StorageService azureStorageService) {
-        this.awsStorageService = awsStorageService;
-        this.gcpStorageService = gcpStorageService;
-        this.azureStorageService = azureStorageService;
-    }
-
-    @PostMapping("/upload/aws")
-    public String uploadToAWS(@RequestParam("file") MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-        awsStorageService.uploadFile(fileName, file);
-        return "File successfully uploaded to AWS S3: " + fileName;
-    }
-
-    @PostMapping("/upload/gcp")
-    public String uploadToGCP(@RequestParam("file") MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-        gcpStorageService.uploadFile(fileName, file);
-        return "File successfully uploaded to Google Cloud Storage: " + fileName;
-    }
-
-    @PostMapping("/upload/azure")
-    public String uploadToAzure(@RequestParam("file") MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-        azureStorageService.uploadFile(fileName, file);
-        return "File successfully uploaded to Azure Blob Storage: " + fileName;
-    }
-
-    @GetMapping("/download/aws/{fileName}")
-    public byte[] downloadFromAWS(@PathVariable String fileName) {
-        return awsStorageService.downloadFile(fileName);
-    }
-
-    @GetMapping("/download/azure/{fileName}")
-    public byte[] downloadFromAzure(@PathVariable String fileName) {
-        return azureStorageService.downloadFile(fileName);
-    }
-
-    @DeleteMapping("/delete/aws/{fileName}")
-    public String deleteFromAWS(@PathVariable String fileName) {
-        awsStorageService.deleteFile(fileName);
-        return "File removed from AWS S3: " + fileName;
-    }
-
-    @DeleteMapping("/delete/azure/{fileName}")
-    public String deleteFromAzure(@PathVariable String fileName) {
-        azureStorageService.deleteFile(fileName);
-        return "File removed from Azure Blob Storage: " + fileName;
-    }
-} 
-````
-
-
-### Changes Made
-- Added `AzureBlobStorageService` to the list of injected services in the constructor.
-- Included Azure-specific endpoints for uploading (`/upload/azure`), downloading (`/download/azure`), and deleting (`/delete/azure`) files, mirroring the structure of AWS and GCP.
-- Updated the introductory text to explicitly list `AzureBlobStorageService` alongside the other implementations.
-- Kept the formatting consistent with Markdown standards, using ```java for the code block.
-
-This section is now ready to be pasted into your `Readme.md` file. Let me know if you need further adjustments!
-
 
 ## License
 
