@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @author Aliabbos Ashurov
  * @since 02 March 2025 08:52
  */
-public abstract class AbstractStorageProvider implements StorageProvider, Loggable {
+public abstract class AbstractStorageProvider implements StorageProvider{
     private final Logger logger;
     protected final String providerName;
     protected final boolean logEnabled;
