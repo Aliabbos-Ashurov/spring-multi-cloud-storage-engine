@@ -6,31 +6,75 @@
     <groupId>com.abbos</groupId>
     <artifactId>multi-cloud-storage-engine</artifactId>
     <version>2.0.0</version>
+    <packaging>jar</packaging>
+
     <name>multi-cloud-storage-engine</name>
-    <description>multi-cloud-storage-engine</description>
+    <description>A library for unified cloud storage operations across AWS S3, GCS, and Azure Blob Storage</description>
+    <url>https://github.com/Aliabbos-Ashurov/spring-multi-cloud-storage-engine</url>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Aliabbos Ashurov</name>
+            <email>aliabbosashurov@gmail.com</email>
+        </developer>
+    </developers>
 
     <properties>
         <java.version>21</java.version>
-        <spring-boot.version>3.4.1</spring-boot.version>
-        <snakeyaml.version>2.3</snakeyaml.version>
-        <slf4j.version>2.0.16</slf4j.version>
-        <logback.version>1.5.16</logback.version>
+        <spring.version>7.0.0-M3</spring.version>
         <aws-sdk.version>2.30.16</aws-sdk.version>
         <gcs-storage.version>2.48.1</gcs-storage.version>
         <azure-storage.version>12.28.1</azure-storage.version>
-        <resilience4j.version>2.3.0</resilience4j.version>
-        <micrometer.version>1.14.2</micrometer.version>
         <reactor.version>3.7.2</reactor.version>
     </properties>
     <dependencies>
-        <!-- Spring Boot Starter (replaces spring-context) -->
+        <!-- Spring Core Modules -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>${spring-boot.version}</version>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <version>3.4.4</version>
+            <optional>true</optional>
         </dependency>
-
-        <!-- Reactor Core (fixes Mono not found) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>3.4.4</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <!-- Logging: Logback provides runtime SLF4J logging implementation -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.18</version>
+        </dependency>
+        <!-- YAML Parser: Required for reading application.yaml configurations -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <!-- Reactor Core  -->
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
@@ -71,19 +115,6 @@
                     <encoding>UTF-8</encoding>
                     <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
-            </plugin>
-            <!-- Spring Boot Maven Plugin for Packaging -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
