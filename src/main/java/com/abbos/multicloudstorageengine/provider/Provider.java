@@ -17,7 +17,7 @@ import java.util.Optional;
  * @author Aliabbos Ashurov
  * @since 02/March/2025 08:50
  */
-public interface Provider extends Loggable {
+interface Provider extends Loggable {
 
     /**
      * Retrieves the name of the storage provider.

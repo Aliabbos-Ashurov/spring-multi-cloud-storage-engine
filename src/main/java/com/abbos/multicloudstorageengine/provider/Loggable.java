@@ -9,7 +9,7 @@ import java.util.logging.Logger;
  * @author Aliabbos Ashurov
  * @since 17/March/2025  21:14
  **/
-public interface Loggable {
+interface Loggable {
 
     boolean isLogEnabled();
     
