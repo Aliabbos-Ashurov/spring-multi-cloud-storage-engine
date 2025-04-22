@@ -1,6 +1,7 @@
 package com.abbos.multicloudstorageengine.config;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import java.util.List;
  **/
 @Component
 @ConfigurationProperties(prefix = "multi-cloud.storage.gcs")
+@ConditionalOnProperty(prefix = "multi-cloud.storage.gcs", name = "enabled", havingValue = "true", matchIfMissing = false)
 public class GCSConfig implements CloudConfig {
     private boolean enabled;
     private String projectId;

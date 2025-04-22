@@ -6,6 +6,7 @@ import com.abbos.multicloudstorageengine.enums.FileType;
 import com.abbos.multicloudstorageengine.enums.MetadataKey;
 import com.abbos.multicloudstorageengine.exception.FileStorageException;
 import com.abbos.multicloudstorageengine.provider.AbstractStorageProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -16,6 +17,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import java.io.IOException;
 
 @Component
+@ConditionalOnBean(S3Client.class)
 public final class S3StorageProvider extends AbstractStorageProvider {
 
     private static final String PROVIDER_NAME = "Amazon Simple Storage Service :: (S3)";

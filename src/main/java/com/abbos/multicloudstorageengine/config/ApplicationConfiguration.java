@@ -5,7 +5,7 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -47,7 +47,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "multi-cloud.storage.aws", name = "enabled", havingValue = "true")
+    @ConditionalOnBean(S3Config.class)
     public S3Client s3Client(S3Config s3Config) {
         AwsBasicCredentials credentials = AwsBasicCredentials.create(s3Config.getAccessKey(), s3Config.getSecretKey());
         return S3Client.builder()
@@ -57,7 +57,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "multi-cloud.storage.gcs", name = "enabled", havingValue = "true")
+    @ConditionalOnBean(GCSConfig.class)
     public Storage gcsClient(GCSConfig gcsConfig) throws IOException {
         return StorageOptions.newBuilder()
                 .setCredentials(ServiceAccountCredentials.fromStream(new FileInputStream(gcsConfig.getCredentialsPath())))
@@ -67,7 +67,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "multi-cloud.storage.azure", name = "enabled", havingValue = "true")
+    @ConditionalOnBean(AzureBlobConfig.class)
     public BlobServiceClient azureBlobClient(AzureBlobConfig azureConfig) {
         String connectionString = String.format(
                 "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net",

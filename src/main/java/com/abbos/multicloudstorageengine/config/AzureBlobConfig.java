@@ -1,6 +1,7 @@
 package com.abbos.multicloudstorageengine.config;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,8 @@ import java.util.List;
  * @since 02/March/2025  11:45
  **/
 @Component
-@ConfigurationProperties(prefix = "multi-cloud.storage.azure")
+@ConfigurationProperties(prefix = "multi-cloud.storage.azure-blob")
+@ConditionalOnProperty(prefix = "multi-cloud.storage.azure-blob", name = "enabled", havingValue = "true", matchIfMissing = false)
 public class AzureBlobConfig implements CloudConfig {
 
     private boolean enabled;
