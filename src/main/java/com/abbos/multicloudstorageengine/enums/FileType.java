@@ -1,6 +1,8 @@
 package com.abbos.multicloudstorageengine.enums;
 
 /**
+ * Enumerates supported file types and their MIME content types.
+ * 
  * @author Aliabbos Ashurov
  * @since 2/March/2025  11:12
  **/
