@@ -17,14 +17,9 @@ flexible, provider-agnostic storage solutions.
 - **Scalability**: Built with Spring Boot for high performance and scalability in distributed systems.
 - **Extensible Design**: Easily add support for new cloud storage providers through modular adapters.
 
-## Prerequisites
+![archicture-1](statics/mlt-2-architect.png)
 
-To run this project, ensure you have the following installed:
-
-- **Java**: 17 or higher
-- **Maven**: 3.8.x or higher
-- **Spring Boot**: 3.x (included via Maven)
-- **Cloud Provider Accounts**: Active accounts with AWS, Google Cloud, and/or Azure with API credentials.
+![archicture-1](statics/key-dependency.png)
 
 ## Setup Instructions
 
